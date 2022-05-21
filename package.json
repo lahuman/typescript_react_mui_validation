@@ -1,0 +1,19 @@
+{
+  "name": "react-mui-validation",
+  "version": "0.0.1",
+  "description": "support mui error & helperText",
+  
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "react",
+    "mui",
+    "validation"
+  ],
+  "author": "lahuman@daum.net",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.6.4"
+  }
+}
