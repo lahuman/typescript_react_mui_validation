@@ -1,18 +1,23 @@
 {
   "name": "react-mui-validation",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "support mui error & helperText",
   "main": "dist/index.js",
   "types" : "dist/index.d.ts",
   "scripts": {
     "build": "tsc"
   },
+  "homepage": "https://github.com/lahuman/typescript_react_mui_validation#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lahuman/typescript_react_mui_validation.git"
+  },
   "keywords": [
     "react",
     "mui",
     "validation"
   ],
-  "author": "lahuman@daum.net",
+  "author": "Daniel Lim <lahuman@daum.net>",
   "license": "MIT",
   "devDependencies": {
     "typescript": "^4.6.4"
