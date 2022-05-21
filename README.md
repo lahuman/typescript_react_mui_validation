@@ -11,6 +11,14 @@ $ npm install react-mui-validation --save
 $ yarn add react-mui-validation
 ```
 
+## Functions 
+
+- required
+- min
+- max
+- same 
+- regex 
+
 ## Usage
 
 ### Model
