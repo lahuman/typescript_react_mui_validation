@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.KeyAndRegexAndMsg = exports.NumberAndMsg = void 0;
+exports.BaseModel = exports.RegexAndMsg = exports.NumberAndMsg = void 0;
 var NumberAndMsg = /** @class */ (function () {
     function NumberAndMsg(num, msg) {
         this.num = num;
@@ -9,14 +9,14 @@ var NumberAndMsg = /** @class */ (function () {
     return NumberAndMsg;
 }());
 exports.NumberAndMsg = NumberAndMsg;
-var KeyAndRegexAndMsg = /** @class */ (function () {
-    function KeyAndRegexAndMsg(regex, msg) {
+var RegexAndMsg = /** @class */ (function () {
+    function RegexAndMsg(regex, msg) {
         this.regex = regex;
         this.msg = msg;
     }
-    return KeyAndRegexAndMsg;
+    return RegexAndMsg;
 }());
-exports.KeyAndRegexAndMsg = KeyAndRegexAndMsg;
+exports.RegexAndMsg = RegexAndMsg;
 var BaseModel = /** @class */ (function () {
     function BaseModel() {
     }
@@ -62,4 +62,4 @@ var BaseModel = /** @class */ (function () {
     BaseModel._regex = {};
     return BaseModel;
 }());
-exports.default = BaseModel;
+exports.BaseModel = BaseModel;

@@ -24,15 +24,15 @@ export declare type KeyWithKeysAndMsg = {
 export declare type KeyAndRegex = {
     [index: string]: RegExp;
 };
-export declare class KeyAndRegexAndMsg {
+export declare class RegexAndMsg {
     regex: RegExp;
     msg: string;
     constructor(regex: RegExp, msg: string);
 }
 export declare type KeyAndRegexMsg = {
-    [index: string]: KeyAndRegexAndMsg;
+    [index: string]: RegexAndMsg;
 };
-export default class BaseModel {
+export declare class BaseModel {
     [index: string]: any;
     protected static _required: Strings | KeyAndMsg;
     protected static _min: KeyAndNumber | KeyAndKeyAndMsg;

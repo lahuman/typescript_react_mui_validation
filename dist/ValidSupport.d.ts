@@ -1,4 +1,4 @@
-import BaseModel from "./BaseModel";
+import { BaseModel } from "./BaseModel";
 export declare class ErrorState {
     [index: string]: {
         error: boolean;

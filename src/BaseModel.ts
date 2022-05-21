@@ -16,7 +16,7 @@ export type KeyWithKeysAndMsg = {
 };
 
 export type KeyAndRegex = { [index: string]: RegExp };
-export class KeyAndRegexAndMsg {
+export class RegexAndMsg {
   regex: RegExp;
   msg: string;
   constructor(regex: RegExp, msg: string) {
@@ -25,9 +25,9 @@ export class KeyAndRegexAndMsg {
   }
 }
 
-export type KeyAndRegexMsg = { [index: string]: KeyAndRegexAndMsg };
+export type KeyAndRegexMsg = { [index: string]: RegexAndMsg };
 
-export default class BaseModel {
+export class BaseModel {
   [index: string]: any;
 
   protected static _required: Strings | KeyAndMsg = [];

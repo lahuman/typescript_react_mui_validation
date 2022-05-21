@@ -1,8 +1,9 @@
 {
   "name": "react-mui-validation",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "support mui error & helperText",
-  
+  "main": "dist/index.js",
+  "types" : "dist/index.d.ts",
   "scripts": {
     "build": "tsc"
   },

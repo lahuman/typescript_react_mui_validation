@@ -1,4 +1,4 @@
-import BaseModel from "./BaseModel";
+import { BaseModel } from "./BaseModel";
 
 const requiredDefaultMsg = "is required!";
 const sameDefaultMsg = "You must enter the same value.";
