@@ -20,6 +20,7 @@ You need to create a model, and the model must inherit from BaseModel.
 Below is an example of PaymemtModel.
 
 ```javascript
+import { BaseModel, RegexAndMsg } from "react-mui-validation";
 
 export class PaymentModel extends BaseModel {
   protected static _required = ["cardName", "cardNumber", "expDate", "cvv"];
@@ -57,6 +58,9 @@ export class PaymentModel extends BaseModel {
 tsx handles it as follows.
 
 ```javascript
+import { makeErrorProps } from 'react-mui-validation';
+
+...
  <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <TextField
