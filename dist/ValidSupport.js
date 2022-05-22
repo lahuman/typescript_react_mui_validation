@@ -74,10 +74,13 @@ var makeInitValid = function (key) {
 var noError = function (stat, key) {
     return !stat[key] || !stat[key].error;
 };
-var validation = function (clazz, data) {
+function validation(data) {
     var _a, _b, _c, _d;
     var newErrorState = {};
     var isValid = true;
+    var clazz = Object.getPrototypeOf(data).constructor;
+    console.log(data);
+    console.log(clazz);
     if (clazz.required instanceof Array) {
         for (var _i = 0, _e = clazz.required; _i < _e.length; _i++) {
             var key = _e[_i];
@@ -174,5 +177,5 @@ var validation = function (clazz, data) {
         }
     }
     return { newErrorState: newErrorState, isValid: isValid };
-};
+}
 exports.validation = validation;

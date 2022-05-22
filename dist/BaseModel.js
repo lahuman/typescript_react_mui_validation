@@ -20,46 +20,11 @@ exports.RegexAndMsg = RegexAndMsg;
 var BaseModel = /** @class */ (function () {
     function BaseModel() {
     }
-    Object.defineProperty(BaseModel, "required", {
-        get: function () {
-            return this._required;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(BaseModel, "min", {
-        get: function () {
-            return this._min;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(BaseModel, "max", {
-        get: function () {
-            return this._max;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(BaseModel, "same", {
-        get: function () {
-            return this._same;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(BaseModel, "regex", {
-        get: function () {
-            return this._regex;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    BaseModel._required = [];
-    BaseModel._min = {};
-    BaseModel._max = {};
-    BaseModel._same = {};
-    BaseModel._regex = {};
+    BaseModel.required = [];
+    BaseModel.min = {};
+    BaseModel.max = {};
+    BaseModel.same = {};
+    BaseModel.regex = {};
     return BaseModel;
 }());
 exports.BaseModel = BaseModel;

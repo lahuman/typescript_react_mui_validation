@@ -34,14 +34,9 @@ export declare type KeyAndRegexMsg = {
 };
 export declare class BaseModel {
     [index: string]: any;
-    protected static _required: Strings | KeyAndMsg;
-    protected static _min: KeyAndNumber | KeyAndKeyAndMsg;
-    protected static _max: KeyAndNumber | KeyAndKeyAndMsg;
-    protected static _same: KeyAndStrings | KeyWithKeysAndMsg;
-    protected static _regex: KeyAndRegex | KeyAndRegexMsg;
-    static get required(): KeyAndMsg | Strings;
-    static get min(): KeyAndNumber | KeyAndKeyAndMsg;
-    static get max(): KeyAndNumber | KeyAndKeyAndMsg;
-    static get same(): KeyAndStrings | KeyWithKeysAndMsg;
-    static get regex(): KeyAndRegex | KeyAndRegexMsg;
+    static required: Strings | KeyAndMsg;
+    static min: KeyAndNumber | KeyAndKeyAndMsg;
+    static max: KeyAndNumber | KeyAndKeyAndMsg;
+    static same: KeyAndStrings | KeyWithKeysAndMsg;
+    static regex: KeyAndRegex | KeyAndRegexMsg;
 }
