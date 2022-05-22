@@ -177,26 +177,26 @@ Here is some code that calls validation, among other things.
 
 ```javascript
 
-  const handleNext = () => {
-    let result = {
-      newErrorState: {},
-      isValid: false
-    }
-    if(activeStep === 0){
-      result = validation(addressData);
-    }else if(activeStep === 1){
-      result = validation(paymentData);
-    }
+const handleNext = () => {
+  let result = {
+    newErrorState: {},
+    isValid: false
+  }
+  if(activeStep === 0){
+    result = validation(AddressModel, addressData);
+  }else if(activeStep === 1){
+    result = validation(PaymentModel, paymentData);
+  }
 
-    setErrorState({
-      ...errorState,
-      ...result.newErrorState,
-    });
-    if (!result.isValid) {
-      return;
-    }
-    setActiveStep(activeStep + 1);
-  };
+  setErrorState({
+    ...errorState,
+    ...result.newErrorState,
+  });
+  if (!result.isValid) {
+    return;
+  }
+  setActiveStep(activeStep + 1);
+};
 ```
 
 Check out [Example](https://github.com/lahuman/typescript_react_mui_validation_example) for full code
