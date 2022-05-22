@@ -66,9 +66,9 @@ const makeInitValid = (key: string) => ({
 const noError = (stat: ErrorState, key: string) =>
   !stat[key] || !stat[key].error;
 
-export function validation<T extends BaseModel>(
-  clazz: T,
-  data: T
+export function validation(
+  clazz: BaseModel,
+  data: BaseModel
 ): { newErrorState: ErrorState; isValid: boolean } {
   let newErrorState = {} as ErrorState;
   let isValid = true;
