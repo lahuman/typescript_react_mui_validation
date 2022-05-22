@@ -206,6 +206,138 @@ Check out [Example](https://github.com/lahuman/typescript_react_mui_validation_e
 
 I make example by [Mui ckeckout template](https://github.com/mui/material-ui/tree/v5.8.0/docs/data/material/getting-started/templates/checkout)
 
+## Test
+
+```sh
+$ npm run build
+$ npm run Test
+
+
+> react-mui-validation@0.1.4 test
+> node ./dist/test/test.js
+
+-----------------------------------
+Required test ::
+errorState :: {
+  "name": {
+    "error": true,
+    "errMsg": "is required!"
+  },
+  "password1": {
+    "error": true,
+    "errMsg": "is required!"
+  },
+  "age": {
+    "error": true,
+    "errMsg": "The minimum is 18!"
+  },
+  "email": {
+    "error": false,
+    "errMsg": ""
+  }
+}
+Required test :: OK!
+-----------------------------------
+Min test ::
+errorState :: {
+  "name": {
+    "error": false,
+    "errMsg": ""
+  },
+  "password1": {
+    "error": false,
+    "errMsg": ""
+  },
+  "age": {
+    "error": true,
+    "errMsg": "The minimum is 18!"
+  },
+  "password2": {
+    "error": false,
+    "errMsg": ""
+  },
+  "email": {
+    "error": false,
+    "errMsg": ""
+  }
+}
+Min test :: OK!
+-----------------------------------
+Max test ::
+errorState :: {
+  "name": {
+    "error": false,
+    "errMsg": ""
+  },
+  "password1": {
+    "error": false,
+    "errMsg": ""
+  },
+  "age": {
+    "error": true,
+    "errMsg": "The maximum is 100!"
+  },
+  "password2": {
+    "error": false,
+    "errMsg": ""
+  },
+  "email": {
+    "error": false,
+    "errMsg": ""
+  }
+}
+Max test :: OK!
+-----------------------------------
+Same test ::
+errorState :: {
+  "name": {
+    "error": false,
+    "errMsg": ""
+  },
+  "password1": {
+    "error": true,
+    "errMsg": "You must enter the same value."
+  },
+  "age": {
+    "error": false,
+    "errMsg": ""
+  },
+  "password2": {
+    "error": true,
+    "errMsg": "You must enter the same value."
+  },
+  "email": {
+    "error": false,
+    "errMsg": ""
+  }
+}
+Same test :: OK!
+-----------------------------------
+ALL RIGHT test ::
+errorState :: {
+  "name": {
+    "error": false,
+    "errMsg": ""
+  },
+  "password1": {
+    "error": false,
+    "errMsg": ""
+  },
+  "age": {
+    "error": false,
+    "errMsg": ""
+  },
+  "password2": {
+    "error": false,
+    "errMsg": ""
+  },
+  "email": {
+    "error": false,
+    "errMsg": ""
+  }
+}
+ALL RIGHT test :: OK!
+```
 
 
 ## License
