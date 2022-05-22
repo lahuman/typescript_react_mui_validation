@@ -67,15 +67,12 @@ const noError = (stat: ErrorState, key: string) =>
   !stat[key] || !stat[key].error;
 
 export function validation<T extends BaseModel>(
+  clazz: T,
   data: T
 ): { newErrorState: ErrorState; isValid: boolean } {
-
   let newErrorState = {} as ErrorState;
   let isValid = true;
-  
-  const clazz = Object.getPrototypeOf(data).constructor;
-  console.log(data);
-  console.log(clazz)
+
   if (clazz.required instanceof Array) {
     for (const key of clazz.required) {
       let valid = makeInitValid(key);
