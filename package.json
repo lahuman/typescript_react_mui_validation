@@ -1,11 +1,12 @@
 {
   "name": "react-mui-validation",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "support mui error & helperText",
   "main": "dist/index.js",
   "types" : "dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "node ./dist/test/test.js"
   },
   "homepage": "https://github.com/lahuman/typescript_react_mui_validation#readme",
   "repository": {

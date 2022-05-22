@@ -30,13 +30,13 @@ export type KeyAndRegexMsg = { [index: string]: RegexAndMsg };
 export class BaseModel {
   [index: string]: any;
 
-  static required: Strings | KeyAndMsg = [];
+  static readonly required: Strings | KeyAndMsg = [];
 
-  static min: KeyAndNumber | KeyAndKeyAndMsg = {};
+  static readonly min: KeyAndNumber | KeyAndKeyAndMsg = {};
 
-  static max: KeyAndNumber | KeyAndKeyAndMsg = {};
+  static readonly max: KeyAndNumber | KeyAndKeyAndMsg = {};
 
-  static same: KeyAndStrings | KeyWithKeysAndMsg = {};
+  static readonly same: KeyAndStrings | KeyWithKeysAndMsg = {};
 
-  static regex: KeyAndRegex | KeyAndRegexMsg = {};
+  static readonly regex: KeyAndRegex | KeyAndRegexMsg = {};
 }
