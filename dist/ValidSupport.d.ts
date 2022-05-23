@@ -10,7 +10,7 @@ export declare const makeErrorProps: (state: ErrorState, key: string) => {
     error: boolean;
     helperText: string;
 };
-export declare function validation(clazz: BaseModel, data: BaseModel): {
+export declare function validation(rule: BaseModel, data: BaseModel): {
     newErrorState: ErrorState;
     isValid: boolean;
 };

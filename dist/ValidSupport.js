@@ -74,12 +74,12 @@ var makeInitValid = function (key) {
 var noError = function (stat, key) {
     return !stat[key] || !stat[key].error;
 };
-function validation(clazz, data) {
+function validation(rule, data) {
     var _a, _b, _c, _d;
     var newErrorState = {};
     var isValid = true;
-    if (clazz.required instanceof Array) {
-        for (var _i = 0, _e = clazz.required; _i < _e.length; _i++) {
+    if (rule.required instanceof Array) {
+        for (var _i = 0, _e = rule.required; _i < _e.length; _i++) {
             var key = _e[_i];
             var valid = makeInitValid(key);
             if (data[key].trim() === "") {
@@ -90,47 +90,47 @@ function validation(clazz, data) {
         }
     }
     else {
-        for (var _f = 0, _g = Object.keys(clazz.required); _f < _g.length; _f++) {
+        for (var _f = 0, _g = Object.keys(rule.required); _f < _g.length; _f++) {
             var key = _g[_f];
             var valid = makeInitValid(key);
             if (data[key].trim() === "") {
-                valid = (_b = {}, _b[key] = { error: true, errMsg: clazz.required[key] }, _b);
+                valid = (_b = {}, _b[key] = { error: true, errMsg: rule.required[key] }, _b);
                 isValid = false;
             }
             newErrorState = __assign(__assign({}, newErrorState), valid);
         }
     }
-    for (var _h = 0, _j = Object.keys(clazz.min); _h < _j.length; _h++) {
+    for (var _h = 0, _j = Object.keys(rule.min); _h < _j.length; _h++) {
         var key = _j[_h];
         if (noError(newErrorState, key)) {
-            var _k = minOrMaxProcess(true, clazz, data, key), valid = _k.valid, noError_1 = _k.isValid;
+            var _k = minOrMaxProcess(true, rule, data, key), valid = _k.valid, noError_1 = _k.isValid;
             newErrorState = __assign(__assign({}, newErrorState), valid);
             if (!noError_1)
                 isValid = noError_1;
         }
     }
-    for (var _l = 0, _m = Object.keys(clazz.max); _l < _m.length; _l++) {
+    for (var _l = 0, _m = Object.keys(rule.max); _l < _m.length; _l++) {
         var key = _m[_l];
         if (noError(newErrorState, key)) {
-            var _o = minOrMaxProcess(false, clazz, data, key), valid = _o.valid, noError_2 = _o.isValid;
+            var _o = minOrMaxProcess(false, rule, data, key), valid = _o.valid, noError_2 = _o.isValid;
             newErrorState = __assign(__assign({}, newErrorState), valid);
             if (!noError_2)
                 isValid = noError_2;
         }
     }
-    for (var _p = 0, _q = Object.keys(clazz.same); _p < _q.length; _p++) {
+    for (var _p = 0, _q = Object.keys(rule.same); _p < _q.length; _p++) {
         var key = _q[_p];
         if (noError(newErrorState, key)) {
             var valid = makeInitValid(key);
             var errMsg = sameDefaultMsg;
             var cKeys = [];
             var notArray = true;
-            if (clazz.same[key] instanceof Array) {
-                cKeys = clazz.same[key];
+            if (rule.same[key] instanceof Array) {
+                cKeys = rule.same[key];
                 notArray = false;
             }
             else {
-                cKeys = Object.keys(clazz.same[key]);
+                cKeys = Object.keys(rule.same[key]);
                 notArray = true;
             }
             for (var _r = 0, cKeys_1 = cKeys; _r < cKeys_1.length; _r++) {
@@ -139,10 +139,10 @@ function validation(clazz, data) {
                 if (data[key] !== data[cKey]) {
                     valid = __assign(__assign({}, valid), (_c = {}, _c[key] = {
                         error: true,
-                        errMsg: notArray ? clazz.same[key][cKey] : errMsg,
+                        errMsg: notArray ? rule.same[key][cKey] : errMsg,
                     }, _c[cKey] = {
                         error: true,
-                        errMsg: notArray ? clazz.same[key][cKey] : errMsg,
+                        errMsg: notArray ? rule.same[key][cKey] : errMsg,
                     }, _c));
                     isValid = false;
                 }
@@ -150,20 +150,20 @@ function validation(clazz, data) {
             newErrorState = __assign(__assign({}, newErrorState), valid);
         }
     }
-    for (var _s = 0, _t = Object.keys(clazz.regex); _s < _t.length; _s++) {
+    for (var _s = 0, _t = Object.keys(rule.regex); _s < _t.length; _s++) {
         var key = _t[_s];
         if (noError(newErrorState, key)) {
             var valid = makeInitValid(key);
             if (data[key].trim() !== "") {
                 var regex = void 0;
                 var errMsg = "";
-                if (clazz.regex[key] instanceof RegExp) {
-                    regex = clazz.regex[key];
+                if (rule.regex[key] instanceof RegExp) {
+                    regex = rule.regex[key];
                     errMsg = regexDefaultMsg(regex);
                 }
                 else {
-                    regex = clazz.regex[key].regex;
-                    errMsg = clazz.regex[key].msg;
+                    regex = rule.regex[key].regex;
+                    errMsg = rule.regex[key].msg;
                 }
                 if (!regex.test(data[key])) {
                     valid = (_d = {}, _d[key] = { error: true, errMsg: errMsg }, _d);

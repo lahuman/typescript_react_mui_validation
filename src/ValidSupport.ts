@@ -67,14 +67,14 @@ const noError = (stat: ErrorState, key: string) =>
   !stat[key] || !stat[key].error;
 
 export function validation(
-  clazz: BaseModel,
+  rule: BaseModel,
   data: BaseModel
 ): { newErrorState: ErrorState; isValid: boolean } {
   let newErrorState = {} as ErrorState;
   let isValid = true;
 
-  if (clazz.required instanceof Array) {
-    for (const key of clazz.required) {
+  if (rule.required instanceof Array) {
+    for (const key of rule.required) {
       let valid = makeInitValid(key);
       if (data[key].trim() === "") {
         valid = { [key]: { error: true, errMsg: requiredDefaultMsg } };
@@ -83,21 +83,21 @@ export function validation(
       newErrorState = { ...newErrorState, ...valid };
     }
   } else {
-    for (const key of Object.keys(clazz.required)) {
+    for (const key of Object.keys(rule.required)) {
       let valid = makeInitValid(key);
       if (data[key].trim() === "") {
-        valid = { [key]: { error: true, errMsg: clazz.required[key] } };
+        valid = { [key]: { error: true, errMsg: rule.required[key] } };
         isValid = false;
       }
       newErrorState = { ...newErrorState, ...valid };
     }
   }
 
-  for (const key of Object.keys(clazz.min)) {
+  for (const key of Object.keys(rule.min)) {
     if (noError(newErrorState, key)) {
       const { valid, isValid: noError } = minOrMaxProcess(
         true,
-        clazz,
+        rule,
         data,
         key
       );
@@ -106,11 +106,11 @@ export function validation(
     }
   }
 
-  for (const key of Object.keys(clazz.max)) {
+  for (const key of Object.keys(rule.max)) {
     if (noError(newErrorState, key)) {
       const { valid, isValid: noError } = minOrMaxProcess(
         false,
-        clazz,
+        rule,
         data,
         key
       );
@@ -118,18 +118,18 @@ export function validation(
       if (!noError) isValid = noError;
     }
   }
-  for (const key of Object.keys(clazz.same)) {
+  for (const key of Object.keys(rule.same)) {
     if (noError(newErrorState, key)) {
       let valid = makeInitValid(key);
       let errMsg = sameDefaultMsg;
       let cKeys = [];
       let notArray = true;
 
-      if (clazz.same[key] instanceof Array) {
-        cKeys = clazz.same[key];
+      if (rule.same[key] instanceof Array) {
+        cKeys = rule.same[key];
         notArray = false;
       } else {
-        cKeys = Object.keys(clazz.same[key]);
+        cKeys = Object.keys(rule.same[key]);
         notArray = true;
       }
 
@@ -140,11 +140,11 @@ export function validation(
             ...valid,
             [key]: {
               error: true,
-              errMsg: notArray ? clazz.same[key][cKey] : errMsg,
+              errMsg: notArray ? rule.same[key][cKey] : errMsg,
             },
             [cKey]: {
               error: true,
-              errMsg: notArray ? clazz.same[key][cKey] : errMsg,
+              errMsg: notArray ? rule.same[key][cKey] : errMsg,
             },
           };
           isValid = false;
@@ -155,18 +155,18 @@ export function validation(
     }
   }
 
-  for (const key of Object.keys(clazz.regex)) {
+  for (const key of Object.keys(rule.regex)) {
     if (noError(newErrorState, key)) {
       let valid = makeInitValid(key);
       if (data[key].trim() !== "") {
         let regex;
         let errMsg = "";
-        if (clazz.regex[key] instanceof RegExp) {
-          regex = clazz.regex[key];
+        if (rule.regex[key] instanceof RegExp) {
+          regex = rule.regex[key];
           errMsg = regexDefaultMsg(regex);
         } else {
-          regex = clazz.regex[key].regex;
-          errMsg = clazz.regex[key].msg;
+          regex = rule.regex[key].regex;
+          errMsg = rule.regex[key].msg;
         }
 
         if (!regex.test(data[key])) {
