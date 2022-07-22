@@ -1,6 +1,7 @@
 import { BaseModel } from "./BaseModel";
 
 const requiredDefaultMsg = "is required!";
+const numberDefaultMsg = "is not number!";
 const sameDefaultMsg = "You must enter the same value.";
 const regexDefaultMsg = (regex: RegExp) =>
   `You must enter the ${regex.toString()} rule.`;
@@ -66,6 +67,33 @@ const makeInitValid = (key: string) => ({
 const noError = (stat: ErrorState, key: string) =>
   !stat[key] || !stat[key].error;
 
+
+const _requiredValid = (data: BaseModel, key: string, errMsg: string): [any, boolean] => {
+  let valid = makeInitValid(key);
+  let isValid = true;
+  let value = data[key];
+  if (typeof data[key] === 'string') {
+    value = data[key].trim();
+  }
+
+  if (value === "") {
+    valid = { [key]: { error: true, errMsg } };
+    isValid = false;
+  }
+
+  return [valid, isValid];
+}
+const _numberValid = (data: BaseModel, key: string, errMsg: string): [any, boolean] => {
+  let valid = makeInitValid(key);
+  let isValid = true;
+  if (isNaN(parseInt(data[key], 10))) {
+    valid = { [key]: { error: true, errMsg } };
+    isValid = false;
+  }
+
+  return [valid, isValid];
+}
+
 export function validation(
   rule: BaseModel,
   data: BaseModel
@@ -73,24 +101,20 @@ export function validation(
   let newErrorState = {} as ErrorState;
   let isValid = true;
 
-  if (rule.required instanceof Array) {
-    for (const key of rule.required) {
-      let valid = makeInitValid(key);
-      if (data[key].trim() === "") {
-        valid = { [key]: { error: true, errMsg: requiredDefaultMsg } };
-        isValid = false;
-      }
-      newErrorState = { ...newErrorState, ...valid };
-    }
-  } else {
-    for (const key of Object.keys(rule.required)) {
-      let valid = makeInitValid(key);
-      if (data[key].trim() === "") {
-        valid = { [key]: { error: true, errMsg: rule.required[key] } };
-        isValid = false;
-      }
-      newErrorState = { ...newErrorState, ...valid };
-    }
+  const requiredIsArray = rule.required instanceof Array;
+  const requiredKeys = requiredIsArray ? rule.required : Object.keys(rule.required);
+  for (const key of requiredKeys) {
+    const [valid, updateIsValid] = _requiredValid(data, key, requiredIsArray ? requiredDefaultMsg : rule.required[key]);
+    newErrorState = { ...newErrorState, ...valid };
+    if (!updateIsValid) isValid = false;
+  }
+
+  const numberIsArray = rule.number instanceof Array;
+  const numberKeys = numberIsArray ? rule.number : Object.keys(rule.number);
+  for (const key of numberKeys) {
+    const [valid, updateIsValid] = _numberValid(data, key, numberIsArray ? numberDefaultMsg : rule.number[key]);
+    newErrorState = { ...newErrorState, ...valid };
+    if (!updateIsValid) isValid = false;
   }
 
   for (const key of Object.keys(rule.min)) {

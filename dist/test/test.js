@@ -42,6 +42,7 @@ var TestModel = /** @class */ (function (_super) {
     }
     TestModel.required = ["name", "password1"];
     TestModel.same = { password1: ["password2"] };
+    TestModel.number = ["age"];
     TestModel.min = { age: 18 };
     TestModel.max = { age: 100 };
     TestModel.regex = {
@@ -80,6 +81,7 @@ var defaultTestModel = new TestModel({
 function main() {
     // TestModel.required = ['a', 'b'];
     errorTest("Required", new TestModel({}));
+    errorTest("number", new TestModel({ age: Number.NaN }));
     errorTest("Min", new TestModel(__assign(__assign({}, defaultTestModel), { age: 15 })));
     errorTest("Max", new TestModel(__assign(__assign({}, defaultTestModel), { age: 200 })));
     errorTest("Same", new TestModel(__assign(__assign({}, defaultTestModel), { password2: "4567" })));

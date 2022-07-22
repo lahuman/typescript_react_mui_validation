@@ -31,6 +31,8 @@ export class BaseModel {
   [index: string]: any;
 
   static readonly required: Strings | KeyAndMsg = [];
+  
+  static readonly number: Strings | KeyAndMsg = [];
 
   static readonly min: KeyAndNumber | KeyAndKeyAndMsg = {};
 

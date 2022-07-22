@@ -9,6 +9,7 @@ class TestModel extends BaseModel {
 
   static readonly required = ["name", "password1"];
   static readonly same = { password1: ["password2"] };
+  static readonly number = ["age"];
   static readonly min = { age: 18 };
   static readonly max = { age: 100 };
   static readonly regex = {
@@ -67,6 +68,7 @@ function main() {
   // TestModel.required = ['a', 'b'];
 
   errorTest("Required", new TestModel({}));
+  errorTest("number", new TestModel({age: Number.NaN}));
   errorTest(
     "Min",
     new TestModel({

@@ -21,6 +21,7 @@ var BaseModel = /** @class */ (function () {
     function BaseModel() {
     }
     BaseModel.required = [];
+    BaseModel.number = [];
     BaseModel.min = {};
     BaseModel.max = {};
     BaseModel.same = {};

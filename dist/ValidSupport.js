@@ -13,6 +13,7 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validation = exports.makeErrorProps = exports.initErrorState = exports.ErrorState = void 0;
 var requiredDefaultMsg = "is required!";
+var numberDefaultMsg = "is not number!";
 var sameDefaultMsg = "You must enter the same value.";
 var regexDefaultMsg = function (regex) {
     return "You must enter the ".concat(regex.toString(), " rule.");
@@ -74,52 +75,72 @@ var makeInitValid = function (key) {
 var noError = function (stat, key) {
     return !stat[key] || !stat[key].error;
 };
+var _requiredValid = function (data, key, errMsg) {
+    var _a;
+    var valid = makeInitValid(key);
+    var isValid = true;
+    var value = data[key];
+    if (typeof data[key] === 'string') {
+        value = data[key].trim();
+    }
+    if (value === "") {
+        valid = (_a = {}, _a[key] = { error: true, errMsg: errMsg }, _a);
+        isValid = false;
+    }
+    return [valid, isValid];
+};
+var _numberValid = function (data, key, errMsg) {
+    var _a;
+    var valid = makeInitValid(key);
+    var isValid = true;
+    if (isNaN(parseInt(data[key], 10))) {
+        valid = (_a = {}, _a[key] = { error: true, errMsg: errMsg }, _a);
+        isValid = false;
+    }
+    return [valid, isValid];
+};
 function validation(rule, data) {
-    var _a, _b, _c, _d;
+    var _a, _b;
     var newErrorState = {};
     var isValid = true;
-    if (rule.required instanceof Array) {
-        for (var _i = 0, _e = rule.required; _i < _e.length; _i++) {
-            var key = _e[_i];
-            var valid = makeInitValid(key);
-            if (data[key].trim() === "") {
-                valid = (_a = {}, _a[key] = { error: true, errMsg: requiredDefaultMsg }, _a);
-                isValid = false;
-            }
-            newErrorState = __assign(__assign({}, newErrorState), valid);
-        }
+    var requiredIsArray = rule.required instanceof Array;
+    var requiredKeys = requiredIsArray ? rule.required : Object.keys(rule.required);
+    for (var _i = 0, requiredKeys_1 = requiredKeys; _i < requiredKeys_1.length; _i++) {
+        var key = requiredKeys_1[_i];
+        var _c = _requiredValid(data, key, requiredIsArray ? requiredDefaultMsg : rule.required[key]), valid = _c[0], updateIsValid = _c[1];
+        newErrorState = __assign(__assign({}, newErrorState), valid);
+        if (!updateIsValid)
+            isValid = false;
     }
-    else {
-        for (var _f = 0, _g = Object.keys(rule.required); _f < _g.length; _f++) {
-            var key = _g[_f];
-            var valid = makeInitValid(key);
-            if (data[key].trim() === "") {
-                valid = (_b = {}, _b[key] = { error: true, errMsg: rule.required[key] }, _b);
-                isValid = false;
-            }
-            newErrorState = __assign(__assign({}, newErrorState), valid);
-        }
+    var numberIsArray = rule.number instanceof Array;
+    var numberKeys = numberIsArray ? rule.number : Object.keys(rule.number);
+    for (var _d = 0, numberKeys_1 = numberKeys; _d < numberKeys_1.length; _d++) {
+        var key = numberKeys_1[_d];
+        var _e = _numberValid(data, key, numberIsArray ? numberDefaultMsg : rule.number[key]), valid = _e[0], updateIsValid = _e[1];
+        newErrorState = __assign(__assign({}, newErrorState), valid);
+        if (!updateIsValid)
+            isValid = false;
     }
-    for (var _h = 0, _j = Object.keys(rule.min); _h < _j.length; _h++) {
-        var key = _j[_h];
+    for (var _f = 0, _g = Object.keys(rule.min); _f < _g.length; _f++) {
+        var key = _g[_f];
         if (noError(newErrorState, key)) {
-            var _k = minOrMaxProcess(true, rule, data, key), valid = _k.valid, noError_1 = _k.isValid;
+            var _h = minOrMaxProcess(true, rule, data, key), valid = _h.valid, noError_1 = _h.isValid;
             newErrorState = __assign(__assign({}, newErrorState), valid);
             if (!noError_1)
                 isValid = noError_1;
         }
     }
-    for (var _l = 0, _m = Object.keys(rule.max); _l < _m.length; _l++) {
-        var key = _m[_l];
+    for (var _j = 0, _k = Object.keys(rule.max); _j < _k.length; _j++) {
+        var key = _k[_j];
         if (noError(newErrorState, key)) {
-            var _o = minOrMaxProcess(false, rule, data, key), valid = _o.valid, noError_2 = _o.isValid;
+            var _l = minOrMaxProcess(false, rule, data, key), valid = _l.valid, noError_2 = _l.isValid;
             newErrorState = __assign(__assign({}, newErrorState), valid);
             if (!noError_2)
                 isValid = noError_2;
         }
     }
-    for (var _p = 0, _q = Object.keys(rule.same); _p < _q.length; _p++) {
-        var key = _q[_p];
+    for (var _m = 0, _o = Object.keys(rule.same); _m < _o.length; _m++) {
+        var key = _o[_m];
         if (noError(newErrorState, key)) {
             var valid = makeInitValid(key);
             var errMsg = sameDefaultMsg;
@@ -133,25 +154,25 @@ function validation(rule, data) {
                 cKeys = Object.keys(rule.same[key]);
                 notArray = true;
             }
-            for (var _r = 0, cKeys_1 = cKeys; _r < cKeys_1.length; _r++) {
-                var cKey = cKeys_1[_r];
+            for (var _p = 0, cKeys_1 = cKeys; _p < cKeys_1.length; _p++) {
+                var cKey = cKeys_1[_p];
                 valid = __assign(__assign({}, valid), makeInitValid(cKey));
                 if (data[key] !== data[cKey]) {
-                    valid = __assign(__assign({}, valid), (_c = {}, _c[key] = {
+                    valid = __assign(__assign({}, valid), (_a = {}, _a[key] = {
                         error: true,
                         errMsg: notArray ? rule.same[key][cKey] : errMsg,
-                    }, _c[cKey] = {
+                    }, _a[cKey] = {
                         error: true,
                         errMsg: notArray ? rule.same[key][cKey] : errMsg,
-                    }, _c));
+                    }, _a));
                     isValid = false;
                 }
             }
             newErrorState = __assign(__assign({}, newErrorState), valid);
         }
     }
-    for (var _s = 0, _t = Object.keys(rule.regex); _s < _t.length; _s++) {
-        var key = _t[_s];
+    for (var _q = 0, _r = Object.keys(rule.regex); _q < _r.length; _q++) {
+        var key = _r[_q];
         if (noError(newErrorState, key)) {
             var valid = makeInitValid(key);
             if (data[key].trim() !== "") {
@@ -166,7 +187,7 @@ function validation(rule, data) {
                     errMsg = rule.regex[key].msg;
                 }
                 if (!regex.test(data[key])) {
-                    valid = (_d = {}, _d[key] = { error: true, errMsg: errMsg }, _d);
+                    valid = (_b = {}, _b[key] = { error: true, errMsg: errMsg }, _b);
                     isValid = false;
                 }
             }

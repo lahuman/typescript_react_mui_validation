@@ -4,6 +4,12 @@ Typescript + React + Mui + Validation
 
 It is designed to take advantage of Mui's errors and helperText.
 
+## Update Info 
+
+- ```2022.07.22``` 
+    + required bug fix
+    + add number type
+
 ## Installation 
 ```sh
 $ npm install react-mui-validation --save
@@ -14,6 +20,7 @@ $ yarn add react-mui-validation
 ## Functions 
 
 - required
+- number
 - min
 - max
 - same 
@@ -215,7 +222,6 @@ $ npm run Test
 
 > react-mui-validation@0.1.4 test
 > node ./dist/test/test.js
-
 -----------------------------------
 Required test ::
 errorState :: {
@@ -237,6 +243,27 @@ errorState :: {
   }
 }
 Required test :: OK!
+-----------------------------------
+number test ::
+errorState :: {
+  "name": {
+    "error": true,
+    "errMsg": "is required!"
+  },
+  "password1": {
+    "error": true,
+    "errMsg": "is required!"
+  },
+  "age": {
+    "error": true,
+    "errMsg": "is not number!"
+  },
+  "email": {
+    "error": false,
+    "errMsg": ""
+  }
+}
+number test :: OK!
 -----------------------------------
 Min test ::
 errorState :: {
