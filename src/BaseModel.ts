@@ -41,4 +41,8 @@ export class BaseModel {
   static readonly same: KeyAndStrings | KeyWithKeysAndMsg = {};
 
   static readonly regex: KeyAndRegex | KeyAndRegexMsg = {};
+
+  static readonly minLength: KeyAndNumber | KeyAndKeyAndMsg = {};
+
+  static readonly maxLength: KeyAndNumber | KeyAndKeyAndMsg = {};
 }

@@ -6,6 +6,9 @@ It is designed to take advantage of Mui's errors and helperText.
 
 ## Update Info 
 
+- ```2022.10.25``` 
+    + add length check
+
 - ```2022.07.22``` 
     + required bug fix
     + add number type
@@ -23,6 +26,8 @@ $ yarn add react-mui-validation
 - number
 - min
 - max
+- minLength
+- maxLength
 - same 
 - regex 
 

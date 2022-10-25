@@ -26,6 +26,8 @@ var BaseModel = /** @class */ (function () {
     BaseModel.max = {};
     BaseModel.same = {};
     BaseModel.regex = {};
+    BaseModel.minLength = {};
+    BaseModel.maxLength = {};
     return BaseModel;
 }());
 exports.BaseModel = BaseModel;

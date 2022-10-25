@@ -45,6 +45,10 @@ var TestModel = /** @class */ (function (_super) {
     TestModel.number = ["age"];
     TestModel.min = { age: 18 };
     TestModel.max = { age: 100 };
+    TestModel.maxLength = { name: 15 };
+    TestModel.minLength = {
+        password1: { num: 4, msg: "password minimum lenght is 4" },
+    };
     TestModel.regex = {
         email: new index_1.RegexAndMsg(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i, "You must enter email address!"),
     };
@@ -73,8 +77,8 @@ function passTest(type, data) {
 }
 var defaultTestModel = new TestModel({
     name: "test",
-    password1: "1234",
-    password2: "1234",
+    password1: "123456",
+    password2: "123456",
     age: 20,
     email: "lahuman@daum.net",
 });
@@ -85,6 +89,8 @@ function main() {
     errorTest("Min", new TestModel(__assign(__assign({}, defaultTestModel), { age: 15 })));
     errorTest("Max", new TestModel(__assign(__assign({}, defaultTestModel), { age: 200 })));
     errorTest("Same", new TestModel(__assign(__assign({}, defaultTestModel), { password2: "4567" })));
+    errorTest("MaxLength", new TestModel(__assign(__assign({}, defaultTestModel), { name: "123456789123456789" })));
+    errorTest("MinLength", new TestModel(__assign(__assign({}, defaultTestModel), { password1: "234", password2: "234" })));
     passTest("ALL RIGHT", defaultTestModel);
 }
 main();

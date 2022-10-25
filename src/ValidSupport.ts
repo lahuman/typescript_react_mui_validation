@@ -25,6 +25,52 @@ const getNumAndMessage = (
   return { num, errMsg };
 };
 
+
+const getLengthAndMessage = (
+  clazz: BaseModel,
+  key: string,
+  type: string
+): { num: number; errMsg: string } => {
+  let num = 0;
+  let errMsg = "";
+
+  if (typeof clazz[`${type}Length`][key] === "number") {
+    num = clazz[`${type}Length`][key];
+    errMsg = `The ${type}imum is ${num}!`;
+  } else {
+    num = clazz[`${type}Length`][key].num;
+    errMsg = clazz[`${type}Length`][key].msg;
+  }
+
+  return { num, errMsg };
+};
+
+
+const minOrMaxLengthProcess = (
+  isMin: boolean,
+  clazz: BaseModel,
+  data: BaseModel,
+  key: string
+) => {
+  const type = isMin ? "min" : "max";
+  const { num, errMsg } = getLengthAndMessage(clazz, key, type);
+  let valid = makeInitValid(key);
+  let isValid = true;
+  let checking = isMin
+    ? data[key].trim().length < num
+    : data[key].trim().length  > num;
+  if (checking) {
+    valid = {
+      [key]: {
+        error: true,
+        errMsg,
+      },
+    };
+    isValid = false;
+  }
+  return { valid, isValid };
+};
+
 const minOrMaxProcess = (
   isMin: boolean,
   clazz: BaseModel,
@@ -117,6 +163,34 @@ export function validation(
     if (!updateIsValid) isValid = false;
   }
 
+  for (const key of Object.keys(rule.minLength)) {
+    if (noError(newErrorState, key)) {
+      const { valid, isValid: noError } = minOrMaxLengthProcess(
+        true,
+        rule,
+        data,
+        key
+      );
+      newErrorState = { ...newErrorState, ...valid };
+      if (!noError) isValid = noError;
+    }
+  }
+
+
+  for (const key of Object.keys(rule.maxLength)) {
+    if (noError(newErrorState, key)) {
+      const { valid, isValid: noError } = minOrMaxLengthProcess(
+        false,
+        rule,
+        data,
+        key
+      );
+      newErrorState = { ...newErrorState, ...valid };
+      if (!noError) isValid = noError;
+    }
+  }
+
+
   for (const key of Object.keys(rule.min)) {
     if (noError(newErrorState, key)) {
       const { valid, isValid: noError } = minOrMaxProcess(
@@ -142,6 +216,7 @@ export function validation(
       if (!noError) isValid = noError;
     }
   }
+
   for (const key of Object.keys(rule.same)) {
     if (noError(newErrorState, key)) {
       let valid = makeInitValid(key);

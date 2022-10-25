@@ -14,5 +14,14 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.VALIDATE_TYPE = void 0;
 __exportStar(require("./BaseModel"), exports);
 __exportStar(require("./ValidSupport"), exports);
+exports.VALIDATE_TYPE = {
+    REQUIRED: 'required',
+    NUMBER: 'number',
+    MIN: 'min',
+    MAX: 'max',
+    SAME: 'same',
+    REGEX: 'regex',
+};

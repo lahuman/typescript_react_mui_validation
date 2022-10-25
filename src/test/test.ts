@@ -12,6 +12,10 @@ class TestModel extends BaseModel {
   static readonly number = ["age"];
   static readonly min = { age: 18 };
   static readonly max = { age: 100 };
+  static readonly maxLength = { name: 15 };
+  static readonly minLength = {
+    password1: { num: 4, msg: "password minimum lenght is 4" },
+  };
   static readonly regex = {
     email: new RegexAndMsg(
       /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i,
@@ -34,9 +38,7 @@ function runTest(type: string, data: BaseModel) {
   console.log("-----------------------------------");
   console.log(`${type} test ::`);
   const result = validation(TestModel, data);
-  console.log(
-    `errorState :: ${JSON.stringify(result.newErrorState, null, 2)}`
-  );
+  console.log(`errorState :: ${JSON.stringify(result.newErrorState, null, 2)}`);
   return result;
 }
 
@@ -58,8 +60,8 @@ function passTest(type: string, data: BaseModel): void {
 
 const defaultTestModel = new TestModel({
   name: "test",
-  password1: "1234",
-  password2: "1234",
+  password1: "123456",
+  password2: "123456",
   age: 20,
   email: "lahuman@daum.net",
 });
@@ -68,7 +70,7 @@ function main() {
   // TestModel.required = ['a', 'b'];
 
   errorTest("Required", new TestModel({}));
-  errorTest("number", new TestModel({age: Number.NaN}));
+  errorTest("number", new TestModel({ age: Number.NaN }));
   errorTest(
     "Min",
     new TestModel({
@@ -90,6 +92,23 @@ function main() {
     new TestModel({
       ...defaultTestModel,
       password2: "4567",
+    })
+  );
+
+  errorTest(
+    "MaxLength",
+    new TestModel({
+      ...defaultTestModel,
+      name: "123456789123456789",
+    })
+  );
+
+  errorTest(
+    "MinLength",
+    new TestModel({
+      ...defaultTestModel,
+      password1: "234",
+      password2: "234",
     })
   );
 
