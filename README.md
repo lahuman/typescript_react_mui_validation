@@ -275,6 +275,54 @@ Check out [Example](https://github.com/lahuman/typescript_react_mui_validation_e
 
 ## Test
 
+
+```mermaid
+
+classDiagram
+    BaseModel <|-- TestModel
+    BaseModel <|-- ItemModel
+    
+    BaseModel : + required
+    BaseModel : + number
+    BaseModel : + min
+    BaseModel : + max
+    BaseModel : + minLength
+    BaseModel : + maxLength
+    BaseModel : + same
+    BaseModel : + regex
+    BaseModel : + item
+
+
+    class TestModel{
+       name: string;
+        password1: string;
+        password2: string;
+        age: number;
+        email: string;
+        itemModel: ItemModel[];
+        itemModel2: ItemModel[];
+        + required
+        + number
+        + min
+        + max
+        + minLength
+        + maxLength
+        + same
+        + regex
+        + item
+    }
+
+    class ItemModel{
+        name: string;
+        price: number;
+
+        + required
+        + number
+        + minLength
+    }
+ 
+```
+
 ```sh
 $ npm run build
 $ npm run Test
