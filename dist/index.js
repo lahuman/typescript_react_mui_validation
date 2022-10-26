@@ -22,6 +22,9 @@ exports.VALIDATE_TYPE = {
     NUMBER: 'number',
     MIN: 'min',
     MAX: 'max',
+    MINLENGTH: 'minLength',
+    MAXLENGTH: 'maxLength',
     SAME: 'same',
     REGEX: 'regex',
+    ITEMLIST: 'itemList'
 };

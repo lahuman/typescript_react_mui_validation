@@ -9,4 +9,5 @@ export const VALIDATE_TYPE = {
     MAXLENGTH: 'maxLength',
     SAME: 'same',
     REGEX: 'regex',
+    ITEM: 'item'
   } as const;

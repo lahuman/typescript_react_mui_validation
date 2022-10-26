@@ -1,4 +1,5 @@
 export type Strings = string[];
+export type KeyAndModel = { [index: string]: BaseModel };
 export type KeyAndMsg = { [index: string]: string };
 export type KeyAndNumber = { [index: string]: number };
 export class NumberAndMsg {
@@ -31,7 +32,7 @@ export class BaseModel {
   [index: string]: any;
 
   static readonly required: Strings | KeyAndMsg = [];
-  
+
   static readonly number: Strings | KeyAndMsg = [];
 
   static readonly min: KeyAndNumber | KeyAndKeyAndMsg = {};
@@ -45,4 +46,6 @@ export class BaseModel {
   static readonly minLength: KeyAndNumber | KeyAndKeyAndMsg = {};
 
   static readonly maxLength: KeyAndNumber | KeyAndKeyAndMsg = {};
+
+  static readonly item: KeyAndModel = {};
 }

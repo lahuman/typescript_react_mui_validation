@@ -1,4 +1,20 @@
+import { KeyAndNumber, KeyAndKeyAndMsg } from "../BaseModel";
 import { BaseModel, RegexAndMsg, validation } from "../index";
+
+class ItemModel extends BaseModel {
+  name: string;
+  price: number;
+
+  static readonly required = ["name", "price"];
+  static readonly number = { price: "Price must number type" };
+  static readonly minLength = { name: 2 };
+
+  constructor(data: Partial<ItemModel>) {
+    super();
+    this.name = data.name ?? "";
+    this.price = data.price ?? 0;
+  }
+}
 
 class TestModel extends BaseModel {
   name: string;
@@ -6,7 +22,10 @@ class TestModel extends BaseModel {
   password2: string;
   age: number;
   email: string;
+  itemModel: ItemModel[];
+  itemModel2: ItemModel[];
 
+  static readonly item = { itemModel: ItemModel, itemModel2: ItemModel };
   static readonly required = ["name", "password1"];
   static readonly same = { password1: ["password2"] };
   static readonly number = ["age"];
@@ -31,6 +50,8 @@ class TestModel extends BaseModel {
     this.password2 = data.password2 ?? "";
     this.age = data.age ?? 0;
     this.email = data.email ?? "";
+    this.itemModel = data.itemModel ?? [];
+    this.itemModel2 = data.itemModel2 ?? [];
   }
 }
 
@@ -39,6 +60,10 @@ function runTest(type: string, data: BaseModel) {
   console.log(`${type} test ::`);
   const result = validation(TestModel, data);
   console.log(`errorState :: ${JSON.stringify(result.newErrorState, null, 2)}`);
+  if (result.newItemErrorState)
+    console.log(
+      `itemErrorState :: ${JSON.stringify(result.newItemErrorState, null, 2)}`
+    );
   return result;
 }
 
@@ -64,6 +89,10 @@ const defaultTestModel = new TestModel({
   password2: "123456",
   age: 20,
   email: "lahuman@daum.net",
+  itemModel: [
+    new ItemModel({ name: "box", price: 1000 }),
+    { name: "box", price: 1000 },
+  ],
 });
 
 function main() {
@@ -109,6 +138,18 @@ function main() {
       ...defaultTestModel,
       password1: "234",
       password2: "234",
+    })
+  );
+
+  errorTest(
+    "Item",
+    new TestModel({
+      ...defaultTestModel,
+      itemModel: [
+        new ItemModel({ price: 1000 }),
+        new ItemModel({ price: 1000, name: 'ab' }),
+      ],
+      itemModel2: [new ItemModel({ price: 1000, name: 'd' })],
     })
   );
 

@@ -113,7 +113,7 @@ var _requiredValid = function (data, key, errMsg) {
     var valid = makeInitValid(key);
     var isValid = true;
     var value = data[key];
-    if (typeof data[key] === 'string') {
+    if (typeof data[key] === "string") {
         value = data[key].trim();
     }
     if (value === "") {
@@ -137,7 +137,9 @@ function validation(rule, data) {
     var newErrorState = {};
     var isValid = true;
     var requiredIsArray = rule.required instanceof Array;
-    var requiredKeys = requiredIsArray ? rule.required : Object.keys(rule.required);
+    var requiredKeys = requiredIsArray
+        ? rule.required
+        : Object.keys(rule.required);
     for (var _i = 0, requiredKeys_1 = requiredKeys; _i < requiredKeys_1.length; _i++) {
         var key = requiredKeys_1[_i];
         var _c = _requiredValid(data, key, requiredIsArray ? requiredDefaultMsg : rule.required[key]), valid = _c[0], updateIsValid = _c[1];
@@ -245,6 +247,26 @@ function validation(rule, data) {
             newErrorState = __assign(__assign({}, newErrorState), valid);
         }
     }
-    return { newErrorState: newErrorState, isValid: isValid };
+    var newItemErrorState = {};
+    if (rule.item)
+        for (var _y = 0, _z = Object.keys(rule.item); _y < _z.length; _y++) {
+            var key = _z[_y];
+            if (data[key] instanceof Array) {
+                for (var _0 = 0, _1 = Object.keys(data[key]); _0 < _1.length; _0++) {
+                    var itemIdx = _1[_0];
+                    var itemResult = validation(rule.item[key], data[key][itemIdx]);
+                    if (newItemErrorState[key]) {
+                        newItemErrorState[key].push(itemResult.newErrorState);
+                    }
+                    else {
+                        newItemErrorState[key] = [itemResult.newErrorState];
+                    }
+                    if (!itemResult.isValid) {
+                        isValid = false;
+                    }
+                }
+            }
+        }
+    return { newErrorState: newErrorState, isValid: isValid, newItemErrorState: newItemErrorState };
 }
 exports.validation = validation;

@@ -1,4 +1,7 @@
 export declare type Strings = string[];
+export declare type KeyAndModel = {
+    [index: string]: BaseModel;
+};
 export declare type KeyAndMsg = {
     [index: string]: string;
 };
@@ -42,4 +45,5 @@ export declare class BaseModel {
     static readonly regex: KeyAndRegex | KeyAndRegexMsg;
     static readonly minLength: KeyAndNumber | KeyAndKeyAndMsg;
     static readonly maxLength: KeyAndNumber | KeyAndKeyAndMsg;
+    static readonly item: KeyAndModel;
 }

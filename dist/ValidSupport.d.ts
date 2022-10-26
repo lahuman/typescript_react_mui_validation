@@ -13,4 +13,7 @@ export declare const makeErrorProps: (state: ErrorState, key: string) => {
 export declare function validation(rule: BaseModel, data: BaseModel): {
     newErrorState: ErrorState;
     isValid: boolean;
+    newItemErrorState?: {
+        [index: string]: Array<ErrorState>;
+    };
 };

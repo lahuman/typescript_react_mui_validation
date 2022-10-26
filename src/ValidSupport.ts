@@ -25,7 +25,6 @@ const getNumAndMessage = (
   return { num, errMsg };
 };
 
-
 const getLengthAndMessage = (
   clazz: BaseModel,
   key: string,
@@ -45,7 +44,6 @@ const getLengthAndMessage = (
   return { num, errMsg };
 };
 
-
 const minOrMaxLengthProcess = (
   isMin: boolean,
   clazz: BaseModel,
@@ -58,7 +56,7 @@ const minOrMaxLengthProcess = (
   let isValid = true;
   let checking = isMin
     ? data[key].trim().length < num
-    : data[key].trim().length  > num;
+    : data[key].trim().length > num;
   if (checking) {
     valid = {
       [key]: {
@@ -113,12 +111,15 @@ const makeInitValid = (key: string) => ({
 const noError = (stat: ErrorState, key: string) =>
   !stat[key] || !stat[key].error;
 
-
-const _requiredValid = (data: BaseModel, key: string, errMsg: string): [any, boolean] => {
+const _requiredValid = (
+  data: BaseModel,
+  key: string,
+  errMsg: string
+): [any, boolean] => {
   let valid = makeInitValid(key);
   let isValid = true;
   let value = data[key];
-  if (typeof data[key] === 'string') {
+  if (typeof data[key] === "string") {
     value = data[key].trim();
   }
 
@@ -128,8 +129,12 @@ const _requiredValid = (data: BaseModel, key: string, errMsg: string): [any, boo
   }
 
   return [valid, isValid];
-}
-const _numberValid = (data: BaseModel, key: string, errMsg: string): [any, boolean] => {
+};
+const _numberValid = (
+  data: BaseModel,
+  key: string,
+  errMsg: string
+): [any, boolean] => {
   let valid = makeInitValid(key);
   let isValid = true;
   if (isNaN(parseInt(data[key], 10))) {
@@ -138,19 +143,29 @@ const _numberValid = (data: BaseModel, key: string, errMsg: string): [any, boole
   }
 
   return [valid, isValid];
-}
+};
 
 export function validation(
   rule: BaseModel,
   data: BaseModel
-): { newErrorState: ErrorState; isValid: boolean } {
+): {
+  newErrorState: ErrorState;
+  isValid: boolean;
+  newItemErrorState?: { [index: string]: Array<ErrorState> };
+} {
   let newErrorState = {} as ErrorState;
   let isValid = true;
 
   const requiredIsArray = rule.required instanceof Array;
-  const requiredKeys = requiredIsArray ? rule.required : Object.keys(rule.required);
+  const requiredKeys = requiredIsArray
+    ? rule.required
+    : Object.keys(rule.required);
   for (const key of requiredKeys) {
-    const [valid, updateIsValid] = _requiredValid(data, key, requiredIsArray ? requiredDefaultMsg : rule.required[key]);
+    const [valid, updateIsValid] = _requiredValid(
+      data,
+      key,
+      requiredIsArray ? requiredDefaultMsg : rule.required[key]
+    );
     newErrorState = { ...newErrorState, ...valid };
     if (!updateIsValid) isValid = false;
   }
@@ -158,7 +173,11 @@ export function validation(
   const numberIsArray = rule.number instanceof Array;
   const numberKeys = numberIsArray ? rule.number : Object.keys(rule.number);
   for (const key of numberKeys) {
-    const [valid, updateIsValid] = _numberValid(data, key, numberIsArray ? numberDefaultMsg : rule.number[key]);
+    const [valid, updateIsValid] = _numberValid(
+      data,
+      key,
+      numberIsArray ? numberDefaultMsg : rule.number[key]
+    );
     newErrorState = { ...newErrorState, ...valid };
     if (!updateIsValid) isValid = false;
   }
@@ -176,7 +195,6 @@ export function validation(
     }
   }
 
-
   for (const key of Object.keys(rule.maxLength)) {
     if (noError(newErrorState, key)) {
       const { valid, isValid: noError } = minOrMaxLengthProcess(
@@ -189,7 +207,6 @@ export function validation(
       if (!noError) isValid = noError;
     }
   }
-
 
   for (const key of Object.keys(rule.min)) {
     if (noError(newErrorState, key)) {
@@ -277,5 +294,23 @@ export function validation(
     }
   }
 
-  return { newErrorState, isValid };
+  let newItemErrorState: { [index: string]: Array<ErrorState> } = {};
+  if (rule.item)
+    for (const key of Object.keys(rule.item)) {
+      if (data[key] instanceof Array) {
+        for (const itemIdx of Object.keys(data[key])) {
+          const itemResult = validation(rule.item[key], data[key][itemIdx]);
+          if (newItemErrorState[key]) {
+            newItemErrorState[key].push(itemResult.newErrorState);
+          } else {
+            newItemErrorState[key] = [itemResult.newErrorState];
+          }
+          if (!itemResult.isValid) {
+            isValid = false;
+          }
+        }
+      }
+    }
+
+  return { newErrorState, isValid, newItemErrorState };
 }
